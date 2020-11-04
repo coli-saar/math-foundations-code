@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from make_matrix import *
 import numpy as np
+import os
 
 app = Flask(__name__)
 
@@ -45,4 +46,7 @@ def signop(value):
 
 
 
-app.run(debug=True)
+if os.getenv("PORT"):
+    app.run(debug=True, port=int(os.getenv("PORT")))
+else:
+    app.run(debug=True)
