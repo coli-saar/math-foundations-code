@@ -1,7 +1,13 @@
 from flask import Flask, render_template
 from make_matrix import *
 import numpy as np
-import os
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--port", "-p", type=int, default=5000, help="run on this port")
+args = parser.parse_args()
+
+
 
 app = Flask(__name__)
 
@@ -46,7 +52,4 @@ def signop(value):
 
 
 
-if os.getenv("PORT"):
-    app.run(debug=True, port=int(os.getenv("PORT")))
-else:
-    app.run(debug=True)
+app.run(debug=True, host='0.0.0.0', port=args.port)
