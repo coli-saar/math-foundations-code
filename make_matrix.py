@@ -9,6 +9,10 @@ def mk_det_matrix(n, r, rank=None, max_val=3):
     """Generates a random n x n matrix with determinant +/- r and integer coefficients.
     Special case: r = 1 => inverse has only integer coefficients
     Special case: r = 0 => generate linearly dependent vectors
+
+    If the rank argument has a non-null value, the matrix is reduced
+    to the given rank. r = 1 and rank < n has the advantage over r = 0
+    that we still get only integer values when running the Gauss algorithm.
     """
 
     rank = rank or n
@@ -57,6 +61,7 @@ def make_unique_sle(n, max_val=3):
     return A,b
 
 def make_unsolvable_sle(n, max_val=3):
+    "Generates a random system of linear equations that has no solutions. Returns a tuple A, b."
     A = make_low_rank_matrix(n)
     
     b = np.random.randint(-max_val, max_val, size=n)
@@ -67,6 +72,7 @@ def make_unsolvable_sle(n, max_val=3):
     return A, b
 
 def make_underconstrained_sle(n, max_val=3, max_solution_val=3):
+    "Generates a random system of linear equations that has infinitely many solutions. Returns a tuple (A, b, solution), where solution is one of the solutions."
     A = make_low_rank_matrix(n)
     solution = np.random.randint(-max_solution_val, max_solution_val, size=n)
     b = A.dot(solution)
@@ -83,6 +89,7 @@ def is_linear_combination(A, b):
 
 
 def make_low_rank_matrix(n):
+    "Generate random interesting nxn matrix with rank n-1. Still guarantees (I think) that only integer values appear when applying the Gauss algorithm."
     A = mk_det_matrix(n, 1, rank=n-1)
 
     while(True):
