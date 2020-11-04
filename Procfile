@@ -1,1 +1,1 @@
-web: python web.py -p 80
+web: python web.py -p $PORT
