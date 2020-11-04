@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <!-- MathJax -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <!-- Hover elements -->
+        <style>
+            .hide {
+              display: none;
+            }
+                
+            .myDIV:hover + .hide {
+              display: block;
+              color: red;
+            }
+        </style>
+    </head>
+    <body>
+
+        $$\begin{align*}
+        {% for row in range(A.shape[0]) %}
+            {% for op, coeff, variable in formatted[row] %}
+              {{ op }} {{ coeff }} {{ variable }}
+            {% endfor %}
+          &= {{ b[row] }}\\
+        {% endfor %}
+        \end{align*}$$
+
+        
+        <div class="myDIV">Hover mouse here to show the solution.</div>
+        <div class="hide">{{ solution }}</div>
+    </body>
+</html>
