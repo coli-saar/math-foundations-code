@@ -3,13 +3,15 @@ from numpy.linalg import *
 
 # Methods for generating linear algebra problems, cf. Steele 1997.
 
-max_val = 3
+#max_val = 4
 
-def mk_det_matrix(n, r):
+def mk_det_matrix(n, r, rank=None, max_val=3):
     """Generates a random n x n matrix with determinant +/- r and integer coefficients.
     Special case: r = 1 => inverse has only integer coefficients
     Special case: r = 0 => generate linearly dependent vectors
     """
+
+    rank = rank or n
     
     L = np.tril(np.random.randint(-max_val, max_val, size=(n,n)))
     np.fill_diagonal(L, ones(n)) # set diagonal entries to values with product 1
@@ -22,7 +24,12 @@ def mk_det_matrix(n, r):
 
     P = mk_random_permutation_matrix(n)
 
-    ret = P @ L @ U
+    down_ranker = np.zeros((n,n), dtype='int64')
+    one_positions = np.random.choice(n, size=rank, replace=False)
+    down_ranker[one_positions, one_positions] = 1
+    # P = P @ down_ranker
+
+    ret = P @ L @ down_ranker @  U
     return ret
         
 def mk_random_permutation_matrix(n):
@@ -42,10 +49,60 @@ def ones(n):
     return (x / np.prod(x)).astype('int64')
 
 
-def make_unique_sle(n):
+def make_unique_sle(n, max_val=3):
     "Generates a random system of linear equations with a unique solution. Returns a tuple A, b."
     A = mk_det_matrix(n,1)
     solution = np.random.randint(-max_val, max_val, size=n)
     b = A @ solution
     return A,b
+
+def make_unsolvable_sle(n, max_val=3):
+    A = make_low_rank_matrix(n)
+    
+    b = np.random.randint(-max_val, max_val, size=n)
+    while is_linear_combination(A, b):
+        print("regenerate b")
+        b = np.random.randint(-max_val, max_val, size=n)
+
+    return A, b
+
+def make_underconstrained_sle(n, max_val=3, max_solution_val=3):
+    A = make_low_rank_matrix(n)
+    solution = np.random.randint(-max_solution_val, max_solution_val, size=n)
+    b = A.dot(solution)
+    return A, b, solution
+
+
+
+def is_linear_combination(A, b):
+    "Tests if b can be expressed as linear combination of the column vectors of A"
+    aug = np.zeros((A.shape[0], A.shape[1]+1))
+    aug[:, :-1] = A
+    aug[:, -1] = b
+    return np.linalg.matrix_rank(aug) == np.linalg.matrix_rank(A)
+
+
+def make_low_rank_matrix(n):
+    A = mk_det_matrix(n, 1, rank=n-1)
+
+    while(True):
+        if is_interesting_matrix(A):
+            return A
+        else:
+            A = mk_det_matrix(n, 1, rank=n-1)
+
+
+def is_interesting_matrix(A):
+    # check for zero rows
+    n = A.shape[0]
+    z = np.zeros(n, dtype=int)
+    if any(np.array_equal(row, z) for row in A):
+        return False
+
+    # check for duplicate rows
+    unique_rows = set([tuple(row) for row in A])
+    if len(unique_rows) < n:
+        return False
+
+    return True
 

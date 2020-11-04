@@ -23,15 +23,27 @@ def hello_world():
 
 @app.route('/linear-equations.html')
 def linear():
-    A, b = make_unique_sle(3)
-    x = np.linalg.solve(A,b).astype('int64')
+    mode = np.random.choice(3, 1, p=[0.5, 0.25, 0.25])[0]  # unique / unsolvable / infinite
+
+    if mode == 0:
+        # uniquely solvable SLE
+        A, b = make_unique_sle(3)
+        x = np.linalg.solve(A,b).astype('int64')
+        xparts = [str(coeff) for coeff in x]
+        solution = f"x = ({', '.join(xparts)})"
+
+    elif mode == 1:
+        # unsolvable SLE
+        A, b = make_unsolvable_sle(3, max_val=4)
+        solution = "unsolvable"
+
+    else:
+        # SLE with infinitely many solutions
+        A, b, x = make_underconstrained_sle(3, max_val=4, max_solution_val=3)
+        xparts = [str(coeff) for coeff in x]
+        solution = f"infinitely many solutions; one solution is x = ({', '.join(xparts)})"
 
     formatted = [[format_coefficient(A, row, col) for col in range(A.shape[1])] for row in range(A.shape[0])]
-
-    xparts = [str(coeff) for coeff in x]
-    solution = f"x = ({', '.join(xparts)})"
-
-
     return render_template("linear-equations.html", A=A, b=b, formatted=formatted, solution=solution)
 
 
