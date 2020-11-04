@@ -3,8 +3,14 @@ from make_matrix import *
 import numpy as np
 import argparse
 
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--port", "-p", type=int, default=5000, help="run on this port")
+parser.add_argument('--debug', action='store_true')
 args = parser.parse_args()
 
 
@@ -51,5 +57,10 @@ def signop(value):
     return "-" if value < 0 else "+"
 
 
+if args.debug:
+    app.run(debug=True, host='0.0.0.0', port=args.port)
+else:
+    http_server = HTTPServer(WSGIContainer(app))
+    http_server.listen(args.port)
+    IOLoop.instance().start()
 
-app.run(debug=True, host='0.0.0.0', port=args.port)

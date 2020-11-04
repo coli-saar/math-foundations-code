@@ -43,18 +43,9 @@ def ones(n):
 
 
 def make_unique_sle(n):
+    "Generates a random system of linear equations with a unique solution. Returns a tuple A, b."
     A = mk_det_matrix(n,1)
     solution = np.random.randint(-max_val, max_val, size=n)
     b = A @ solution
     return A,b
 
-# A, b = make_unique_sle(3)
-# x = np.linalg.solve(A,b)
-# print(A)
-# print(b)
-# print(x)
-
-
-# A = mk_det_matrix(3,1)
-# print(A)
-# print(np.linalg.det(A))
