@@ -25,17 +25,18 @@ def linear():
 def format_coefficient(A, row, col):
     "Returns tuple (op, coefficient, variable)."
     variable = f"x_{col+1}"
+    is_first_nonzero_column = all(A[row][c] == 0 for c in range(col))
 
     if A[row,col] == 0:
         return "", "", ""
 
     elif abs(A[row,col]) == 1:
-        op = "" if col == 0 else signop(A[row,col])
+        op = "" if is_first_nonzero_column else signop(A[row,col])
         return op, "", variable
 
     else:
-        op = "" if col == 0 else signop(A[row,col])
-        coeff = abs(A[row,col])
+        op = "" if is_first_nonzero_column else signop(A[row,col])
+        coeff = A[row,col] if is_first_nonzero_column else abs(A[row,col])
         return op, coeff, variable
 
 
