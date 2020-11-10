@@ -49,6 +49,8 @@ def linear():
 
 def format_coefficient(A, row, col):
     "Formats the given entry of the matrix into a string tuple (op, coefficient, variable) that is suitable for printing."
+    print(A)
+
     variable = f"x_{col+1}"
     is_first_nonzero_column = all(A[row][c] == 0 for c in range(col))
 
@@ -57,7 +59,8 @@ def format_coefficient(A, row, col):
 
     elif abs(A[row,col]) == 1:
         op = "" if is_first_nonzero_column else signop(A[row,col])
-        return op, "", variable
+        coeff = "" if A[row,col] == 1 or not is_first_nonzero_column else "-"
+        return op, coeff, variable
 
     else:
         op = "" if is_first_nonzero_column else signop(A[row,col])
