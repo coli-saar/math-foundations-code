@@ -58,7 +58,7 @@ def make_unique_sle(n, max_val=3):
     A = mk_det_matrix(n,1)
     solution = np.random.randint(-max_val, max_val, size=n)
     b = A @ solution
-    return A,b
+    return A,b,solution
 
 def make_unsolvable_sle(n, max_val=3):
     "Generates a random system of linear equations that has no solutions. Returns a tuple A, b."

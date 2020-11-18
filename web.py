@@ -27,8 +27,8 @@ def linear():
 
     if mode == 0:
         # uniquely solvable SLE
-        A, b = make_unique_sle(3)
-        x = np.linalg.solve(A,b).astype('int64')
+        A, b, x = make_unique_sle(3)
+        # x = np.linalg.solve(A,b).astype('int64')
         xparts = [str(coeff) for coeff in x]
         solution = f"x = ({', '.join(xparts)})"
 
@@ -56,13 +56,25 @@ def format_coefficient(A, row, col):
         return "", "", ""
 
     elif abs(A[row,col]) == 1:
-        op = "" if is_first_nonzero_column else signop(A[row,col])
-        coeff = "" if A[row,col] == 1 or not is_first_nonzero_column else "-"
+        if is_first_nonzero_column:
+            op = ""
+            coeff = "" if A[row,col] == 1 else "-"
+
+        else:
+            op = signop(A[row,col])
+            coeff = ""
+
         return op, coeff, variable
 
     else:
-        op = "" if is_first_nonzero_column else signop(A[row,col])
-        coeff = A[row,col] if is_first_nonzero_column else abs(A[row,col])
+        if is_first_nonzero_column:
+            op = ""
+            coeff = A[row,col]
+
+        else:
+            op = signop(A[row,col])
+            coeff = abs(A[row,col])
+
         return op, coeff, variable
 
 
