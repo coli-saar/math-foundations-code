@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from make_matrix import *
 import numpy as np
+import array_to_latex as a2l
 import argparse
 
 from tornado.wsgi import WSGIContainer
@@ -47,6 +48,27 @@ def linear():
     return render_template("linear-equations.html", A=A, b=b, formatted=formatted, solution=solution)
 
 
+@app.route('/inverse.html')
+def invert():
+    mode = np.random.choice(2, 1, p=[0.75, 0.25])[0]  # invertible / not invertible
+
+    if mode == 0:
+        A, invA = make_invertible_matrix(3)
+        solution = format_matrix(invA)
+
+    else:
+        A = make_low_rank_matrix(3)
+        solution = "not invertible"
+
+    return render_template("inverse.html", formattedA=format_matrix(A), solution=solution)
+
+
+@app.route('/determinant.html')
+def determinant():
+    A, det = make_determinant_problem(3)
+    return render_template("determinant.html", formattedA=format_matrix(A), solution=str(det))
+
+
 def format_coefficient(A, row, col):
     "Formats the given entry of the matrix into a string tuple (op, coefficient, variable) that is suitable for printing."
     variable = f"x_{col+1}"
@@ -81,6 +103,9 @@ def format_coefficient(A, row, col):
 def signop(value):
     return "-" if value < 0 else "+"
 
+
+def format_matrix(A):
+    return a2l.to_ltx(A, frmt='{:d}', arraytype="pmatrix", print_out=False)
 
 if args.debug:
     app.run(debug=True, host='0.0.0.0', port=args.port)

@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.linalg import *
+import math
 
 # Methods for generating linear algebra problems, cf. Steele 1997.
 
@@ -97,6 +98,26 @@ def make_low_rank_matrix(n):
             return A
         else:
             A = mk_det_matrix(n, 1, rank=n-1)
+
+def make_invertible_matrix(n):
+    I = np.eye(n)
+
+    while True:
+        A = mk_det_matrix(n, 1)
+        invA = inv(A).astype('int64')
+
+        if np.array_equal(np.matmul(A, invA), I): # double-check for rounding errors
+            return A, invA
+
+
+def make_determinant_problem(n):
+    while True:
+        det = np.random.randint(-5, 6)
+        A = mk_det_matrix(3, det)
+        actual_determinant = int(round(np.linalg.det(A)))
+
+        if abs(det) == abs(actual_determinant):
+            return A, actual_determinant
 
 
 def is_interesting_matrix(A):
