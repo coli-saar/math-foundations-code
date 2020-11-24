@@ -113,7 +113,7 @@ def make_invertible_matrix(n):
 def make_determinant_problem(n):
     while True:
         det = np.random.randint(-5, 6)
-        A = mk_det_matrix(3, det)
+        A = mk_det_matrix(n, det)
         actual_determinant = int(round(np.linalg.det(A)))
 
         if abs(det) == abs(actual_determinant):

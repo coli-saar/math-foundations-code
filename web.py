@@ -63,10 +63,15 @@ def invert():
     return render_template("inverse.html", formattedA=format_matrix(A), solution=solution)
 
 
-@app.route('/determinant.html')
-def determinant():
+@app.route('/determinant2.html')
+def determinant2():
+    A, det = make_determinant_problem(2)
+    return render_template("determinant.html", n=2, formattedA=format_matrix(A), solution=str(det))
+
+@app.route('/determinant3.html')
+def determinant3():
     A, det = make_determinant_problem(3)
-    return render_template("determinant.html", formattedA=format_matrix(A), solution=str(det))
+    return render_template("determinant.html", n=3, formattedA=format_matrix(A), solution=str(det))
 
 
 def format_coefficient(A, row, col):
