@@ -1,74 +1,25 @@
-<html>
-    <head>
-        <title>Linear Equation Systems - Foundations of Mathematics</title>
+{% extends "base.html" %}
 
-        <!-- MathJax -->
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-        <script>
-        MathJax.Hub.Config({
-            jax: ["input/TeX","output/HTML-CSS"],
-            displayAlign: "left",
-            displayIndent: "2em"
-        });
-        </script>
+{% block title %}Linear Equation Systems{% endblock %}
 
-        <!-- Bootstrap -->
-        <!--
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-        -->
+{% block description %}
+<p>Solve the following system of linear equations.</p>
+{% endblock %}
 
-        <!-- Hover elements -->
-        <style>
-            .hide {
-              display: none;
-            }
-                
-            .myDIV:hover + .hide {
-              display: block;
-              color: red;
-            }
-
-            .equations {
-                padding-left: 20px;
-                border-left: 2px solid darkblue;
-                margin-bottom: 3em;
-            }
-
-            .footer {
-              padding-top: 4em;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Linear Equation Systems</h1>
-
-        <p>Solve the following system of linear equations.</p>
-
-        <p class="equations">
-        \(\begin{align*}
-        {% for row in range(A.shape[0]) %}
-            {% for op, coeff, variable in formatted[row] %}
-              {{ op }} {{ coeff }} {{ variable }}
-            {% endfor %}
-          &= {{ b[row] }}\\
+{% block problem %}
+  \(\begin{align*}
+    {% for row in range(A.shape[0]) %}
+        {% for op, coeff, variable in formatted[row] %}
+          {{ op }} {{ coeff }} {{ variable }}
         {% endfor %}
-        \end{align*}\)
-        </p>
-        
-        <div class="myDIV">Hover or tap here to show the solution.</div>
-        <div class="hide">{{ solution }}</div>
+      &= {{ b[row] }}\\
+    {% endfor %}
+  \end{align*}\)
+{% endblock %}
 
-        <p>
-          <a href="https://matrixcalc.org/en/slu.html#solve-using-Gaussian-elimination%28%7B%7B{{ A[0][0] }},{{ A[0][1] }},{{ A[0][2] }},{{ b[0] }}%7D,%7B{{ A[1][0] }},{{ A[1][1] }},{{ A[1][2] }},{{ b[1] }}%7D,%7B{{ A[2][0] }},{{ A[2][1] }},{{ A[2][2] }},{{ b[2] }}%7D%7D%29" target="_blank">Double-check this solution</a>
-        </p>
+{% block solution %}
+<p>{{ solution }}</p>
+{% endblock %}
 
-        <div class="footer">Developed for "Foundations of Mathematics"<br/>
-            at the <a href="http://www.lst.uni-saarland.de/">Department of Language Science and Technology</a> at Saarland University<br/>
-            by <a href="http://www.coli.uni-saarland.de/~koller/">Alexander Koller</a>.
-        </div>
-    </body>
-</html>
+
