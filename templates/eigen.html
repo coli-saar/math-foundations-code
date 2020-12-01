@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+{% block title %}Eigenvalues and eigenvectors{% endblock %}
+
+{% block description %}
+<p>Determine the eigenvalues and corresponding eigenvectors of the following matrix. Note that there are many eigenbases for the same matrix; your solution is correct if your eigenvectors have the same span as the eigenvectors shown under "solution".</p>
+{% endblock %}
+
+{% block problem %}
+\({{ formattedA }}\)
+{% endblock %}
+
+{% block solution %}
+<ol>
+    {% for i in range(eigenvalues.shape[0]) %}
+    <li>Eigenvalue {{ eigenvalues[i] }} with eigenvector {{ eigenvectors[i] }}</li>
+    {% endfor %}
+</ol>
+
+
+<p>{{ solution }}</p>
+{% endblock %}
+

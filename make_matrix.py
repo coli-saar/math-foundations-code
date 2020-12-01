@@ -100,6 +100,7 @@ def make_low_rank_matrix(n):
             A = mk_det_matrix(n, 1, rank=n-1)
 
 def make_invertible_matrix(n):
+    "Returns an invertible matrix with integer coefficients, with its inverse in integer coefficients."
     I = np.eye(n)
 
     while True:
@@ -118,6 +119,17 @@ def make_determinant_problem(n):
 
         if abs(det) == abs(actual_determinant):
             return A, actual_determinant
+
+def make_eigen_problem(n, max_abs_eigenvalue=2):
+    choices = np.concatenate([np.arange(-max_abs_eigenvalue, 0), np.arange(1,1+max_abs_eigenvalue)])
+    
+    eigenvalues = np.random.choice(choices, n)
+    D = np.diag(eigenvalues)      # nxn diagonal matrix of eigenvalues
+
+    P, Pinv = make_invertible_matrix(n)    # nxn invertible matrix; columns are eigenvectors; change-of-basis from eigenbasis to standard basis
+
+    A = P @ D @ Pinv
+    return A, eigenvalues, P
 
 
 def is_interesting_matrix(A):

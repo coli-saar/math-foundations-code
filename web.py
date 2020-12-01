@@ -74,6 +74,14 @@ def determinant3():
     return render_template("determinant.html", n=3, formattedA=format_matrix(A), solution=str(det))
 
 
+@app.route('/eigen.html')
+def eigen():
+    n = 2
+    A, eigenvalues, P = make_eigen_problem(2)
+    formatted_eigenvectors = [str(P[:,i]) for i in range(n)]
+    return render_template("eigen.html", formattedA=format_matrix(A), eigenvalues=eigenvalues, eigenvectors=formatted_eigenvectors)
+
+
 def format_coefficient(A, row, col):
     "Formats the given entry of the matrix into a string tuple (op, coefficient, variable) that is suitable for printing."
     variable = f"x_{col+1}"
