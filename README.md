@@ -11,5 +11,9 @@ It requires Python 3 to run.
 
 ## Installation
 
-Push to Heroku with `git push heroku master`.
+Push to Heroku with `git push heroku master`. (Not `main` - this Github repository still calls the main branch "master".)
+
+If you get the error "heroku does not appear to be a git repository", register Heroku as a Git remote with `heroku git:remote -a foundations-math`.
+
+
 
