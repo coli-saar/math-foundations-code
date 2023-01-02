@@ -15,6 +15,7 @@ Push to Heroku with `git push heroku master`. (Not `main` - this Github reposito
 
 If you get the error "heroku does not appear to be a git repository", register Heroku as a Git remote with `heroku git:remote -a foundations-math`.
 
+If the log says "no web processes running", spin up a dyno with `heroku ps:scale web=1`.
 
 
 
